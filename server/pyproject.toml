@@ -1,0 +1,16 @@
+[project]
+name = "ytaudio-server"
+version = "0.1.0"
+description = "Python sidecar: tai va trich xuat am thanh YouTube (yt-dlp + ffmpeg + demucs)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "yt-dlp",
+    "demucs>=4.0.1",
+    "imageio-ffmpeg>=0.5",
+    "numpy>=1.26,<2", # torch 2.2.x không tương thích numpy 2.x
+]
+
+[tool.uv]
+package = false

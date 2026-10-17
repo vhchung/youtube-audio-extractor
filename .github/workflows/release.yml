@@ -1,0 +1,65 @@
+name: Release build
+
+# Build installer cho Windows / Linux / macOS khi push tag v* hoặc chạy thủ công.
+# Yêu cầu: repo đã push lên GitHub. Artifact tải ở trang Actions -> run -> Artifacts.
+# Muốn tạo GitHub Release kèm installer: bật phần "creates GitHub releases" bên dưới.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            args: "--bundles nsis,msi"
+          - os: ubuntu-22.04
+            args: "--bundles deb,appimage"
+          - os: macos-latest
+            args: "--bundles app,dmg"
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "YouTube Audio Extract ${{ github.ref_name }}"
+          releaseBody: "Installer Windows (.exe/.msi), Linux (.deb/AppImage), macOS (.dmg). Máy đích cần cài uv: https://docs.astral.sh/uv/getting-started/installation/"
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
