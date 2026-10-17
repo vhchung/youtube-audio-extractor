@@ -9,6 +9,7 @@ import { getServerStatus, isTauri, revealPath, saveAudioFile } from "./lib/tauri
 import type { PlayerControls } from "./lib/ytplayer";
 import { clamp } from "./lib/time";
 import type { AudioFormat, JobState, VideoMeta } from "./types";
+import appLogo from "./assets/images/logo.png";
 import "./styles.css";
 
 type Phase = "boot" | "input" | "loading-meta" | "ready" | "exporting" | "done";
@@ -211,6 +212,7 @@ export default function App() {
   } else if (phase === "input" || phase === "loading-meta") {
     body = (
       <div className="center-box">
+        <img src={appLogo} alt="YouTube Audio Extract Logo" className="hero-logo" />
         <h1 className="hero-title">Trích xuất âm thanh từ YouTube</h1>
         <p className="hero-sub">
           Dán liên kết video, chọn đoạn mong muốn và tải về dưới dạng MP3 / AAC / WAV —
@@ -290,7 +292,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <span className="logo">▶</span>
+        <img src={appLogo} alt="Logo" className="app-logo" />
         <span className="app-title">YouTube Audio Extract</span>
         <span className="spacer" />
         {client && <span className="status-ok">sidecar ●</span>}
