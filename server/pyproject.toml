@@ -1,6 +1,6 @@
 [project]
 name = "ytaudio-server"
-version = "0.1.0"
+version = "1.0.1"
 description = "Python sidecar: tai va trich xuat am thanh YouTube (yt-dlp + ffmpeg + demucs)"
 requires-python = ">=3.12"
 dependencies = [

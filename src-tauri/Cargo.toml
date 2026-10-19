@@ -1,6 +1,6 @@
 [package]
 name = "youtube-audio-extract"
-version = "0.1.0"
+version = "1.0.1"
 description = "Trích xuất âm thanh từ YouTube (cắt đoạn, tách lời thoại, wav/mp3/aac)"
 authors = ["you"]
 edition = "2024"
