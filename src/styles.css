@@ -306,6 +306,23 @@ select:focus-visible {
   white-space: nowrap;
 }
 
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-head h2 {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn.small {
+  padding: 5px 12px;
+  font-size: 13px;
+  flex: none;
+}
+
 .preview-info .sub {
   margin: 0 0 10px;
   color: var(--muted);

@@ -7,10 +7,11 @@ import type { VideoMeta } from "../types";
 interface Props {
   meta: VideoMeta;
   onPlayerReady: (controls: PlayerControls | null) => void;
+  onNewVideo?: () => void;
 }
 
 /** YouTube embed player + thông tin video + nút đánh dấu mốc thời gian. */
-export default function VideoPreview({ meta, onPlayerReady }: Props) {
+export default function VideoPreview({ meta, onPlayerReady, onNewVideo }: Props) {
   const holderRef = useRef<HTMLDivElement>(null);
   const controlsRef = useRef<PlayerControls | null>(null);
   const [playing, setPlaying] = useState(false);
@@ -94,7 +95,14 @@ export default function VideoPreview({ meta, onPlayerReady }: Props) {
       </div>
 
       <div className="preview-info">
-        <h2 title={meta.title}>{meta.title}</h2>
+        <div className="preview-head">
+          <h2 title={meta.title}>{meta.title}</h2>
+          {onNewVideo && (
+            <button className="btn ghost small" onClick={onNewVideo}>
+              🎬 Đổi video
+            </button>
+          )}
+        </div>
         <p className="sub">
           {meta.uploader && <span>{meta.uploader} · </span>}
           <span>Thời lượng: {meta.duration ? fmtTime(meta.duration) : "không rõ"}</span>

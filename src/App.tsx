@@ -198,6 +198,17 @@ export default function App() {
     setPhase("ready");
   };
 
+  const resetToInput = () => {
+    stopPolling();
+    setJob(null);
+    setJobError("");
+    setSavedPath(null);
+    setMeta(null);
+    setMetaError("");
+    setUrl("");
+    setPhase("input");
+  };
+
   // -- Render ------------------------------------------------------------------
   let body: React.ReactNode;
   if (phase === "boot") {
@@ -231,6 +242,7 @@ export default function App() {
           onPlayerReady={(controls) => {
             playerRef.current = controls;
           }}
+          onNewVideo={phase === "ready" || phase === "done" ? resetToInput : undefined}
         />
         {phase === "ready" && (
           <>
@@ -280,6 +292,9 @@ export default function App() {
               )}
               <button className="btn ghost" onClick={resetToReady}>
                 ↺ Trích xuất đoạn khác
+              </button>
+              <button className="btn ghost" onClick={resetToInput}>
+                🎬 Chọn video khác
               </button>
             </div>
             {savedPath && <p className="muted">Đã lưu tới: {savedPath}</p>}
